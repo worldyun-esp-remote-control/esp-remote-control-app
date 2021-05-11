@@ -9,7 +9,6 @@ class MyDrawer extends StatefulWidget {
 }
 
 class _MyDrawerState extends State<MyDrawer> {
-
   // SharedPreferences _prefs;
   String _username = "UnSignIn";
   bool _signIn = false;
@@ -31,7 +30,7 @@ class _MyDrawerState extends State<MyDrawer> {
   //     }
   //   }
   // }
-  
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -40,72 +39,80 @@ class _MyDrawerState extends State<MyDrawer> {
           Row(
             children: <Widget>[
               Expanded(
-                child: UserAccountsDrawerHeader(
-                  accountName: Text(
-                    this._username,
-                    style: TextStyle(
-                      color: Color.fromARGB(150, 0, 0, 0),
-                      fontSize: 19,
-                    ),
+                  child: UserAccountsDrawerHeader(
+                accountName: Text(
+                  this._username,
+                  style: TextStyle(
+                    color: Color.fromARGB(150, 0, 0, 0),
+                    fontSize: 19,
                   ),
-                  accountEmail: Text(
-                    "记录好心情",
+                ),
+                // accountEmail: Text(
+                //   "",
+                //   style: TextStyle(
+                //     color: Color.fromARGB(180, 0, 0, 0),
+                //   ),
+                // ),
+                currentAccountPicture: CircleAvatar(
+                  backgroundColor: Color.fromARGB(255, 150, 150, 175),
+                  child: Text(
+                    this._username[0],
                     style: TextStyle(
-                      color: Color.fromARGB(180, 0, 0, 0),
-                    ),
-                  ),
-                  currentAccountPicture: CircleAvatar(
-                    backgroundColor: Color.fromARGB(255, 150, 150, 175),
-                    child: Text(
-                      this._username[0],
-                      style: TextStyle(
                         fontSize: 36,
                         color: Colors.white,
                         shadows: <Shadow>[
-                          Shadow(color: Colors.black38, offset: Offset(2, 2), blurRadius: 3)
-                        ]
-                      ),
-                    ),
+                          Shadow(
+                              color: Colors.black38,
+                              offset: Offset(2, 2),
+                              blurRadius: 3)
+                        ]),
                   ),
-                  decoration: BoxDecoration(
+                ),
+                decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage("images/drawerHeaderBackGroundImage.jpg"),
-                      fit: BoxFit.cover,
-                    )
-                  ),
-                )
-              )
+                  image: AssetImage("images/drawerHeaderBackGroundImage.jpg"),
+                  fit: BoxFit.cover,
+                )),
+              ))
             ],
           ),
-          InkWell(                                              //登录跳转
+          InkWell(
+            //登录跳转
             child: ListTile(
               leading: CircleAvatar(
                 backgroundColor: Color.fromARGB(0, 255, 255, 255),
-                child: Icon(Icons.person, color: Colors.black54, size: 30,),
+                child: Icon(
+                  Icons.person,
+                  color: Colors.black54,
+                  size: 30,
+                ),
               ),
               title: Text(
                 "${this._signIn ? '登出' : '登录/注册'}",
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.black54
-                ),
+                style: TextStyle(fontSize: 18, color: Colors.black54),
               ),
             ),
-            onTap: null,
+            onTap: () {
+              Navigator.pop(context);
+              // Navigator.of(context).pushNamed('/signIn');
+              Navigator.pushNamed(context, '/signIn');
+            },
           ),
           Divider(),
-          InkWell(                                                //设置跳转
+          InkWell(
+            //设置跳转
             child: ListTile(
               leading: CircleAvatar(
                 backgroundColor: Color.fromARGB(0, 255, 255, 255),
-                child: Icon(Icons.settings,color: Colors.black54, size: 30,),
+                child: Icon(
+                  Icons.settings,
+                  color: Colors.black54,
+                  size: 30,
+                ),
               ),
               title: Text(
                 "设置",
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.black54
-                ),
+                style: TextStyle(fontSize: 18, color: Colors.black54),
               ),
             ),
             onTap: () {

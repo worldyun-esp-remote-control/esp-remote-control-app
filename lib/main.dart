@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:esp_remote_control_app/utils/UserInfo.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -23,9 +24,12 @@ class MyApp extends StatelessWidget {
     final router = FluroRouter(); 
     Routers.configRouters(router);
 
+    //加载用户信息
+    UserInfo.loadUserInfo();
+
     return MaterialApp(
       title: "万能遥控",
-      initialRoute: "/",
+      initialRoute: Routers.homePage,
       onGenerateRoute: router.generator,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

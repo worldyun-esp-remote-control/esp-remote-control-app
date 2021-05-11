@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:esp_remote_control_app/utils/MyToast.dart';
+import 'package:esp_remote_control_app/utils/UserInfo.dart';
 
 import 'HttpException.dart';
 
@@ -10,6 +12,8 @@ class HttpInterceptor extends Interceptor {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) {
+    String token = UserInfo.getToken();
+    options.headers['X-Token'] = token;
     super.onRequest(options, handler);
   }
 
@@ -19,7 +23,24 @@ class HttpInterceptor extends Interceptor {
     Response response,
     ResponseInterceptorHandler handler,
   ) async {
-    // do something...
+    if (response.statusCode == 200) {
+      final bool success = response.data['success'];
+      RequestOptions option = response.requestOptions;
+      if (option.path.endsWith('/user/signIn') ||
+          option.path.endsWith('/user/refresh')) {
+        if (success) {
+          final String token = response.data['data']['token'];
+          UserInfo.setToken(token);
+          UserInfo.setSignIn(true);
+        }else{
+          UserInfo.setSignIn(false);
+        }
+      }
+      if (!success) {
+        final String message = response.data['message'];
+        MyToast.showToast(message);
+      }
+    }
     super.onResponse(response, handler);
   }
 

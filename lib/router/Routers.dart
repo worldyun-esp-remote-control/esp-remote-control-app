@@ -4,7 +4,9 @@ import 'package:esp_remote_control_app/router/RouterHandler.dart';
 
 // 定义路由配置类
 class Routers {
-    static String root = '/';
+    static String homePage = '/';
+    static String signInPage = '/signIn';
+    static String signUpPage = '/signUp';
     //路由配置
     static void configRouters(FluroRouter  router){
         //找不到路由
@@ -15,6 +17,8 @@ class Routers {
             }
         );
         //整体配置
-        router.define(root, handler: homePage);  //  home 页面路由
+        router.define(homePage, handler: home);  //  home 页面路由
+        router.define(signInPage, handler: signIn);
+        router.define(signUpPage, handler: signUp);
     }
 }

@@ -72,7 +72,7 @@ class HttpRequest {
   Options setAuthorizationHeader(Options requestOptions) {
     String _token;
     if (_token != null) {
-      requestOptions.headers['token'] = _token;
+      requestOptions.headers['X-Token'] = _token;
     }
     return requestOptions;
   }
