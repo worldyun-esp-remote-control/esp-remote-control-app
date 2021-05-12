@@ -3,14 +3,14 @@ import 'package:flutter/cupertino.dart';
 class Device {
   final int id;
   final String deviceName;
-  final DateTime lastHeartbeatTime;
+  final String lastHeartbeatTime;
   final bool onLine;
   
   Device({
-    @required this.id,
-    @required this.deviceName,
-    @required this.lastHeartbeatTime,
-    @required this.onLine,
+    this.id,
+    this.deviceName,
+    this.lastHeartbeatTime,
+    this.onLine,
   });
 
   factory Device.fromJson(dynamic item){

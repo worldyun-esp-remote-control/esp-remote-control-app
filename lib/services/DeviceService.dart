@@ -11,7 +11,7 @@ class DeviceService {
     final respons = await Http.get(
       listPath
     );
-    return DeviceList.fromJson(respons['devices']);
+    return DeviceList.fromJson(respons['data']['devices']);
   }
 
 } 

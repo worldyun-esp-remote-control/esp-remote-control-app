@@ -83,4 +83,20 @@ class Http {
       cancelToken: cancelToken,
     );
   }
+
+  static Future delete(
+    String path, {
+    Map<String, dynamic> params,
+    dynamic data,
+    Options options,
+    CancelToken cancelToken,
+  }) async {
+    return await HttpRequest().delete(
+      path,
+      params: params,
+      data: data,
+      options: options,
+      cancelToken: cancelToken,
+    );
+  }
 }

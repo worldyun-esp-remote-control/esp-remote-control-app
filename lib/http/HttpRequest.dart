@@ -115,6 +115,25 @@ class HttpRequest {
     return response.data;
   }
 
+  Future delete(
+    String path, {
+    Map<String, dynamic> params,
+    dynamic data,
+    Options options,
+    CancelToken cancelToken,
+  }) async {
+    Options requestOptions = setAuthorizationHeader(options ?? Options());
+
+    Response response = await dio.delete(
+      path,
+      data: data,
+      queryParameters: params,
+      options: requestOptions,
+      cancelToken: cancelToken ?? _cancelToken,
+    );
+    return response.data;
+  }
+
   /// restful post form 表单提交操作
   Future postForm(
     String path, {

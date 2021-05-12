@@ -16,11 +16,12 @@ class Buttons extends StatefulWidget {
 class _ButtonsState extends State<Buttons> {
   ButtonList _buttonList;
   int _count = 0;
-  StreamSubscription<RefreshRiarysEvent> _refreshRiarysEvent;     //Event Bus
+  StreamSubscription<RefreshRiarysEvent> _refreshRiarysEvent; //Event Bus
 
   @override
   void initState() {
-    _refreshRiarysEvent = eventBus.on<RefreshRiarysEvent>().listen((event) {    //监听刷新Event
+    _refreshRiarysEvent = eventBus.on<RefreshRiarysEvent>().listen((event) {
+      //监听刷新Event
       if (event.refreshRiarys) {
         this._getButtons();
       }
@@ -40,36 +41,93 @@ class _ButtonsState extends State<Buttons> {
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
-      itemCount: this._count,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        crossAxisSpacing: 0,
-        // mainAxisSpacing: 8,
-        mainAxisExtent: 70
-        
+        itemCount: this._count,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            crossAxisSpacing: 0,
+            // mainAxisSpacing: 8,
+            mainAxisExtent: 70),
+        itemBuilder: (BuildContext context, int index) {
+          double panddingLift;
+          double panddingRight;
+          if (index % 3 == 0) {
+            panddingLift = 16;
+            panddingRight = 8;
+          } else if (index % 3 == 1) {
+            panddingLift = 8;
+            panddingRight = 8;
+          } else {
+            panddingLift = 8;
+            panddingRight = 16;
+          }
 
-      ), 
-      itemBuilder: (BuildContext context, int index) {
-        double panddingLift;
-        double panddingRight;
-        if(index % 3 == 0){
-          panddingLift = 16;
-          panddingRight = 8;
-        }else if(index % 3 == 1){
-          panddingLift = 8;
-          panddingRight = 8;
-        }else{
-          panddingLift = 8;
-          panddingRight = 16;
-        }
-        
-        return Container(
-          padding: EdgeInsets.only(top: 16, left: panddingLift, right: panddingRight),
-          child: Center(
-            child: ButtonCard( button: this._buttonList.list[index])
-          ),
+          return Container(
+            padding: EdgeInsets.only( top: 16, left: panddingLift, right: panddingRight),
+            child: InkWell(
+              child: Center(
+                  child: ButtonCard(button: this._buttonList.list[index])
+              ),
+              onTap: () => this._press(this._buttonList.list[index]),
+              onLongPress: () => this._longPress(this._buttonList.list[index]),
+            ),
+          );
+        });
+  }
+
+  void _press(Button button) async {
+    ButtonService.press(button.toMap());
+  }
+
+  void _longPress(Button button) async {
+    showDialog<Null>(
+      context: context,
+      builder: (BuildContext context) {
+        return new SimpleDialog(
+          children: <Widget>[
+            new SimpleDialogOption(
+              child: Center(
+                child: Text(
+                  '学习',
+                  style: TextStyle(
+                    fontSize: 20
+                  ),
+                ), 
+              ),
+              onPressed: () {
+                this._learn(button);
+                Navigator.of(context).pop();
+              },
+            ),
+            new SimpleDialogOption(
+              child: Center(
+                child: Text(
+                  '删除',
+                  style: TextStyle(
+                    fontSize: 20
+                  ),
+                ), 
+              ),
+              onPressed: () {
+                this._delete(button);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
         );
-      }
-    );
+      },
+    ).then((val) {
+      print(val);
+    });
+  }
+
+  void _learn(Button button) async {
+    ButtonService.learn(button.toMap());
+  }
+
+   void _delete(Button button) async {
+    bool success = await ButtonService.delete(button.toMap());
+    if (success) {
+      this._getButtons();
+    }
   }
 }
