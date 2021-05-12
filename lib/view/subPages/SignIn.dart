@@ -1,5 +1,7 @@
 import 'package:esp_remote_control_app/models/User.dart';
+import 'package:esp_remote_control_app/router/Routers.dart';
 import 'package:esp_remote_control_app/services/UserService.dart';
+import 'package:esp_remote_control_app/utils/EvevBus.dart';
 import 'package:esp_remote_control_app/utils/MyToast.dart';
 import 'package:flutter/material.dart';
 
@@ -67,7 +69,7 @@ class _SignInState extends State<SignIn> {
                         style: TextStyle(color: Colors.black54),
                       ),
                       onTap: () {
-                        Navigator.of(context).pushReplacementNamed("/signUp");
+                        Navigator.of(context).pushReplacementNamed(Routers.signUpPage);
                       },
                     )),
                 SizedBox(height: 20),
@@ -109,6 +111,7 @@ class _SignInState extends State<SignIn> {
     bool success = await UserService.signIn(user.toMap());
     if(success){
       MyToast.showToast("登录成功");
+      eventBus.fire(RefreshRiarysEvent(true));
       new Future.delayed(const Duration(milliseconds: 500)).then((value){
         Navigator.pop(context);
       });

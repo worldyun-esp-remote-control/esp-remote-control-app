@@ -1,4 +1,10 @@
+import 'dart:async';
+
 import 'package:esp_remote_control_app/components/MyDrawer.dart';
+import 'package:esp_remote_control_app/router/Routers.dart';
+import 'package:esp_remote_control_app/services/UserService.dart';
+import 'package:esp_remote_control_app/utils/EvevBus.dart';
+import 'package:esp_remote_control_app/view/rootPages/Buttons.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -9,6 +15,20 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+
+  StreamSubscription<SignInEvent> _signInsEvent;     //Event Bus
+
+  @override
+  void initState() {
+    _signInsEvent = eventBus.on<SignInEvent>().listen((event) {    //监听刷新Event
+      if (event.signIn) {
+        Navigator.pushNamed(context, Routers.signInPage);
+      }
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,13 +48,11 @@ class _HomePageState extends State<HomePage> {
         //   )
         // ],
       ),
-      body: Center(
-        child: Text("未登录"),
-      ),
+      body: Buttons(),
       drawer: MyDrawer(),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color.fromARGB(255, 150, 150, 175),
-        child: Icon(Icons.create),
+        child: Icon(Icons.add),
         onPressed: () {
           // Navigator.pushNamed(context, "/newDiary");
         },

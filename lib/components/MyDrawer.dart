@@ -1,5 +1,11 @@
+import 'dart:async';
+
+import 'package:esp_remote_control_app/models/User.dart';
+import 'package:esp_remote_control_app/router/Routers.dart';
+import 'package:esp_remote_control_app/services/UserService.dart';
+import 'package:esp_remote_control_app/utils/EvevBus.dart';
+import 'package:esp_remote_control_app/utils/UserInfo.dart';
 import 'package:flutter/material.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
 
 class MyDrawer extends StatefulWidget {
   MyDrawer({Key key}) : super(key: key);
@@ -9,27 +15,32 @@ class MyDrawer extends StatefulWidget {
 }
 
 class _MyDrawerState extends State<MyDrawer> {
-  // SharedPreferences _prefs;
-  String _username = "UnSignIn";
+  
+  String _userName = "UnSignIn";
   bool _signIn = false;
+  StreamSubscription<RefreshRiarysEvent> _refreshRiarysEvent;     //Event Bus
 
   @override
-  Future<void> initState() {
-    // this._getInfo();
+  void initState() {
+    _refreshRiarysEvent = eventBus.on<RefreshRiarysEvent>().listen((event) {    //监听刷新Event
+      if (event.refreshRiarys) {
+        this._getInfo();
+      }
+    });
+    this._getInfo();
     super.initState();
   }
+  
 
-  // Future<void> _getInfo() async {
-  //   this._prefs = await SharedPreferences.getInstance();
-  //   if (this._prefs.containsKey("signIn")) {
-  //     if (this._prefs.getBool("signIn")) {
-  //       setState(() {
-  //       this._signIn = true;
-  //       this._username = this._prefs.getString("username");
-  //     });
-  //     }
-  //   }
-  // }
+  void _getInfo() async {
+    User user = await UserService.info();
+    if (user != null) {
+      setState(() {
+        this._userName = user.userName;
+        this._signIn = true;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,24 +50,19 @@ class _MyDrawerState extends State<MyDrawer> {
           Row(
             children: <Widget>[
               Expanded(
+                  // ignore: missing_required_param
                   child: UserAccountsDrawerHeader(
                 accountName: Text(
-                  this._username,
+                  this._userName,
                   style: TextStyle(
                     color: Color.fromARGB(150, 0, 0, 0),
                     fontSize: 19,
                   ),
                 ),
-                // accountEmail: Text(
-                //   "",
-                //   style: TextStyle(
-                //     color: Color.fromARGB(180, 0, 0, 0),
-                //   ),
-                // ),
                 currentAccountPicture: CircleAvatar(
                   backgroundColor: Color.fromARGB(255, 150, 150, 175),
                   child: Text(
-                    this._username[0],
+                    this._userName[0],
                     style: TextStyle(
                         fontSize: 36,
                         color: Colors.white,
@@ -70,7 +76,7 @@ class _MyDrawerState extends State<MyDrawer> {
                 ),
                 decoration: BoxDecoration(
                     image: DecorationImage(
-                  image: AssetImage("images/drawerHeaderBackGroundImage.jpg"),
+                  image: AssetImage("assets/images/drawerHeaderBackGroundImage.jpg"),
                   fit: BoxFit.cover,
                 )),
               ))
@@ -94,8 +100,7 @@ class _MyDrawerState extends State<MyDrawer> {
             ),
             onTap: () {
               Navigator.pop(context);
-              // Navigator.of(context).pushNamed('/signIn');
-              Navigator.pushNamed(context, '/signIn');
+              Navigator.pushNamed(context, Routers.signInPage);
             },
           ),
           Divider(),

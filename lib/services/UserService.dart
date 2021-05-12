@@ -1,4 +1,5 @@
 import 'package:esp_remote_control_app/http/Http.dart';
+import 'package:esp_remote_control_app/models/User.dart';
 
 class UserService {
   static const String rootPath = '/user';
@@ -23,5 +24,12 @@ class UserService {
     );
     bool success = respons['success'];
     return success;
+  }
+
+  static Future<User> info() async {
+    final respons = await Http.get(
+      infoPath,
+    );
+    return User.fromJson(respons['data']['user']);
   }
 }

@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:esp_remote_control_app/utils/EvevBus.dart';
 import 'package:esp_remote_control_app/utils/MyToast.dart';
 import 'package:esp_remote_control_app/utils/UserInfo.dart';
 
@@ -12,6 +13,7 @@ class HttpInterceptor extends Interceptor {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) {
+    //添加Token
     String token = UserInfo.getToken();
     options.headers['X-Token'] = token;
     super.onRequest(options, handler);
@@ -25,6 +27,9 @@ class HttpInterceptor extends Interceptor {
   ) async {
     if (response.statusCode == 200) {
       final bool success = response.data['success'];
+      final int code = response.data['code'];
+
+      //存储Token
       RequestOptions option = response.requestOptions;
       if (option.path.endsWith('/user/signIn') ||
           option.path.endsWith('/user/refresh')) {
@@ -36,9 +41,20 @@ class HttpInterceptor extends Interceptor {
           UserInfo.setSignIn(false);
         }
       }
+
+      //存储用户名
+      if(option.path.endsWith('/user/info') && success){
+        final userName = response.data['data']['user']['userName'];
+        UserInfo.setUserName(userName);
+      }
       if (!success) {
         final String message = response.data['message'];
         MyToast.showToast(message);
+      }
+
+      //未登录的弹出登录界面
+      if(code == 22004){
+        eventBus.fire(SignInEvent(true));
       }
     }
     super.onResponse(response, handler);

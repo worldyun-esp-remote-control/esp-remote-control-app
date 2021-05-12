@@ -1,4 +1,5 @@
 import 'package:esp_remote_control_app/models/User.dart';
+import 'package:esp_remote_control_app/router/Routers.dart';
 import 'package:esp_remote_control_app/services/UserService.dart';
 import 'package:esp_remote_control_app/utils/MyToast.dart';
 import 'package:flutter/material.dart';
@@ -67,7 +68,7 @@ class _SignUpState extends State<SignUp> {
                         style: TextStyle(color: Colors.black54),
                       ),
                       onTap: () {
-                        Navigator.of(context).pushReplacementNamed("/signIn");
+                        Navigator.of(context).pushReplacementNamed(Routers.signInPage);
                       },
                     )),
                 SizedBox(height: 20),
@@ -110,7 +111,7 @@ class _SignUpState extends State<SignUp> {
     if(success){
       MyToast.showToast("注册成功");
       new Future.delayed(const Duration(milliseconds: 500)).then((value){
-        Navigator.of(context).pushReplacementNamed("/signIn");
+        Navigator.of(context).pushReplacementNamed(Routers.signInPage);
       });
     }
   }

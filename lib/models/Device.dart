@@ -30,7 +30,7 @@ class DeviceList {
 
   factory DeviceList.fromJson(List<dynamic> list){
     return DeviceList(
-      list.map((item) => Device.fromJson(item)),
+      list.map((item) => Device.fromJson(item)).toList(),
     );
   }
 }
