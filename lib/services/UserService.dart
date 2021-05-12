@@ -32,4 +32,11 @@ class UserService {
     );
     return User.fromJson(respons['data']['user']);
   }
+
+  static Future<bool> refresh() async {
+    final respons = await Http.get(
+      refreshPath,
+    );
+    return respons['success'];
+  }
 }

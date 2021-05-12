@@ -6,6 +6,7 @@ import 'package:esp_remote_control_app/models/Device.dart';
 import 'package:esp_remote_control_app/router/Routers.dart';
 import 'package:esp_remote_control_app/services/ButtonService.dart';
 import 'package:esp_remote_control_app/services/DeviceService.dart';
+import 'package:esp_remote_control_app/services/UserService.dart';
 import 'package:esp_remote_control_app/utils/EvevBus.dart';
 import 'package:esp_remote_control_app/utils/MyToast.dart';
 import 'package:esp_remote_control_app/view/rootPages/Buttons.dart';
@@ -47,6 +48,7 @@ class _HomePageState extends State<HomePage> {
       }
     });
     this._getDevices();
+    UserService.refresh();
     super.initState();
   }
 
