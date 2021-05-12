@@ -1,3 +1,6 @@
+import 'package:esp_remote_control_app/models/User.dart';
+import 'package:esp_remote_control_app/services/UserService.dart';
+import 'package:esp_remote_control_app/utils/MyToast.dart';
 import 'package:flutter/material.dart';
 
 class SignUp extends StatefulWidget {
@@ -8,6 +11,11 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  String _userName;
+  String _password;
+  FocusNode _commentFocusUserName = FocusNode();
+  FocusNode _commentFocusPassword = FocusNode();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,21 +41,10 @@ class _SignUpState extends State<SignUp> {
                     border: OutlineInputBorder(),
                     labelText: "用户名",
                   ),
-                  // focusNode: this._commentFocusUName,
-                  // onChanged: (value) {
-                  //   this._userInfo["username"] = value;
-                  //   if (this._userInfo["password"].length >= 4 &&
-                  //       this._userInfo["username"].length >= 6 &&
-                  //       this._userInfo["username"].length <= 10) {
-                  //     setState(() {
-                  //       this._signFun = this._signIn;
-                  //     });
-                  //   } else {
-                  //     setState(() {
-                  //       this._signFun = null;
-                  //     });
-                  //   }
-                  // },
+                  focusNode: this._commentFocusUserName,
+                  onChanged: (value) {
+                    this._userName = value;
+                  },
                 ),
                 SizedBox(height: 20),
                 TextField(
@@ -56,21 +53,10 @@ class _SignUpState extends State<SignUp> {
                     border: OutlineInputBorder(),
                     labelText: "密码",
                   ),
-                  // focusNode: this._commentFocusPassWd,
-                  // onChanged: (value) {
-                  //   this._userInfo["password"] = value;
-                  //   if (this._userInfo["password"].length >= 4 &&
-                  //       this._userInfo["username"].length >= 6 &&
-                  //       this._userInfo["username"].length <= 10) {
-                  //     setState(() {
-                  //       this._signFun = this._signIn;
-                  //     });
-                  //   } else {
-                  //     setState(() {
-                  //       this._signFun = null;
-                  //     });
-                  //   }
-                  // },
+                  focusNode: this._commentFocusPassword,
+                  onChanged: (value) {
+                    this._password = value;
+                  },
                 ),
                 SizedBox(height: 20),
                 Container(
@@ -88,7 +74,7 @@ class _SignUpState extends State<SignUp> {
                 Container(
                   height: 55,
                   width: double.infinity,
-                  child: RaisedButton(
+                  child: ElevatedButton(
                     child: Text(
                       "注册",
                       style: TextStyle(
@@ -96,10 +82,15 @@ class _SignUpState extends State<SignUp> {
                         fontWeight: FontWeight.w400,
                       ),
                     ),
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            Color.fromARGB(255, 150, 150, 180)),
+                        textStyle:
+                            MaterialStateProperty.all<TextStyle>(TextStyle(
+                          color: Colors.white,
+                        ))),
                     // colorBrightness: Colors.black54,
-                    color: Color.fromARGB(255, 150, 150, 180),
-                    textColor: Colors.white,
-                    // onPressed: this._signFun,
+                    onPressed: this._signUp,
                   ),
                 )
               ],
@@ -107,4 +98,21 @@ class _SignUpState extends State<SignUp> {
           ),
         ));
   }
+
+  void _signUp() async {
+    this._commentFocusUserName.unfocus();
+    this._commentFocusPassword.unfocus();
+    User user = new User(
+      userName: this._userName,
+      password: this._password,
+    );
+    bool success = await UserService.signUp(user.toMap());
+    if(success){
+      MyToast.showToast("注册成功");
+      new Future.delayed(const Duration(milliseconds: 500)).then((value){
+        Navigator.of(context).pushReplacementNamed("/signIn");
+      });
+    }
+  }
+  
 }

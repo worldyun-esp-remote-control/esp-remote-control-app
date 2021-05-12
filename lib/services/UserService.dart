@@ -15,4 +15,13 @@ class UserService {
     bool success = respons['success'];
     return success;
   }
+
+  static Future<bool> signUp(dynamic data) async {
+    final respons = await Http.post(
+      signUpPath,
+      data: data
+    );
+    bool success = respons['success'];
+    return success;
+  }
 }
