@@ -78,22 +78,20 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _add() {
-    final top = 25.0;
+    final top = 70.0;
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       builder: (ctx) {
         return StatefulBuilder(builder: (ctx2, state) {
           return Container(
-            height: MediaQuery.of(ctx2).viewInsets.bottom + 500 + top,
+            height: 400 + top,
             color: Colors.black12,
             child: Stack(
               children: <Widget>[
                 Positioned(
                     left: 30,
-                    bottom: (MediaQuery.of(ctx2).viewInsets.bottom < 0)
-                        ? 0
-                        : MediaQuery.of(ctx2).viewInsets.bottom,
+                    bottom: 100,
                     right: 30,
                     top: top,
                     child: Container(

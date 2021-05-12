@@ -2,7 +2,7 @@
     package="com.example.esp_remote_control_app">
    <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="esp_remote_control_app"
+        android:label="万能遥控"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true"
         android:networkSecurityConfig="@xml/basecommon_network_security_config">
