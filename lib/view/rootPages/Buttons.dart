@@ -4,6 +4,7 @@ import 'package:esp_remote_control_app/components/ButtonCard.dart';
 import 'package:esp_remote_control_app/models/Button.dart';
 import 'package:esp_remote_control_app/services/ButtonService.dart';
 import 'package:esp_remote_control_app/utils/EvevBus.dart';
+import 'package:esp_remote_control_app/utils/MyToast.dart';
 import 'package:flutter/material.dart';
 
 class Buttons extends StatefulWidget {
@@ -127,6 +128,7 @@ class _ButtonsState extends State<Buttons> {
    void _delete(Button button) async {
     bool success = await ButtonService.delete(button.toMap());
     if (success) {
+      MyToast.showToast('删除成功');
       this._getButtons();
     }
   }

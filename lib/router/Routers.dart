@@ -7,6 +7,8 @@ class Routers {
     static String homePage = '/';
     static String signInPage = '/signIn';
     static String signUpPage = '/signUp';
+    static String devicesPage = '/devices';
+
     //路由配置
     static void configRouters(FluroRouter  router){
         //找不到路由
@@ -20,5 +22,6 @@ class Routers {
         router.define(homePage, handler: home);  //  home 页面路由
         router.define(signInPage, handler: signIn);
         router.define(signUpPage, handler: signUp);
+        router.define(devicesPage, handler: devices);
     }
 }

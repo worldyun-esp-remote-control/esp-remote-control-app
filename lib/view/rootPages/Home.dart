@@ -33,6 +33,9 @@ class _HomePageState extends State<HomePage> {
     _signInsEvent = eventBus.on<SignInEvent>().listen((event) {
       //监听登录Event
       if (event.signIn) {
+        if(Navigator.canPop(context)){
+          Navigator.pop(context);
+        }
         Navigator.pushNamed(context, Routers.signInPage);
       }
     });
@@ -59,12 +62,6 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Color.fromARGB(10, 0, 0, 0),
         brightness: Brightness.light,
         elevation: 0,
-        // actions: <Widget>[
-        //   IconButton(
-        //     icon: Icon(Icons.calendar_today),
-        //     onPressed: null,
-        //   )
-        // ],
       ),
       body: Buttons(),
       drawer: MyDrawer(),

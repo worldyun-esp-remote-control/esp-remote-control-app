@@ -15,14 +15,14 @@ class MyDrawer extends StatefulWidget {
 }
 
 class _MyDrawerState extends State<MyDrawer> {
-  
   String _userName = "UnSignIn";
   bool _signIn = false;
-  StreamSubscription<RefreshRiarysEvent> _refreshRiarysEvent;     //Event Bus
+  StreamSubscription<RefreshRiarysEvent> _refreshRiarysEvent; //Event Bus
 
   @override
   void initState() {
-    _refreshRiarysEvent = eventBus.on<RefreshRiarysEvent>().listen((event) {    //监听刷新Event
+    _refreshRiarysEvent = eventBus.on<RefreshRiarysEvent>().listen((event) {
+      //监听刷新Event
       if (event.refreshRiarys) {
         this._getInfo();
       }
@@ -30,7 +30,6 @@ class _MyDrawerState extends State<MyDrawer> {
     this._getInfo();
     super.initState();
   }
-  
 
   void _getInfo() async {
     User user = await UserService.info();
@@ -76,11 +75,34 @@ class _MyDrawerState extends State<MyDrawer> {
                 ),
                 decoration: BoxDecoration(
                     image: DecorationImage(
-                  image: AssetImage("assets/images/drawerHeaderBackGroundImage.jpg"),
+                  image: AssetImage(
+                      "assets/images/drawerHeaderBackGroundImage.jpg"),
                   fit: BoxFit.cover,
                 )),
               ))
             ],
+          ),
+          Divider(),
+          InkWell(
+            //我的设备
+            child: ListTile(
+              leading: CircleAvatar(
+                backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                child: Icon(
+                  Icons.settings,
+                  color: Colors.black54,
+                  size: 30,
+                ),
+              ),
+              title: Text(
+                "我的设备",
+                style: TextStyle(fontSize: 18, color: Colors.black54),
+              ),
+            ),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.pushNamed(context, Routers.devicesPage);
+            },
           ),
           InkWell(
             //登录跳转
@@ -101,27 +123,6 @@ class _MyDrawerState extends State<MyDrawer> {
             onTap: () {
               Navigator.pop(context);
               Navigator.pushNamed(context, Routers.signInPage);
-            },
-          ),
-          Divider(),
-          InkWell(
-            //设置跳转
-            child: ListTile(
-              leading: CircleAvatar(
-                backgroundColor: Color.fromARGB(0, 255, 255, 255),
-                child: Icon(
-                  Icons.settings,
-                  color: Colors.black54,
-                  size: 30,
-                ),
-              ),
-              title: Text(
-                "设置",
-                style: TextStyle(fontSize: 18, color: Colors.black54),
-              ),
-            ),
-            onTap: () {
-              print("设置事件");
             },
           ),
         ],

@@ -1,4 +1,5 @@
 import 'package:esp_remote_control_app/view/rootPages/Home.dart';
+import 'package:esp_remote_control_app/view/subPages/Devices.dart';
 import 'package:esp_remote_control_app/view/subPages/SignIn.dart';
 import 'package:esp_remote_control_app/view/subPages/SignUp.dart';
 import 'package:fluro/fluro.dart'; // 引入路由包依赖文件
@@ -19,4 +20,9 @@ var signIn = new Handler(
 var signUp = new Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   return SignUp();
+});
+
+var devices = new Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return Devices();
 });
